@@ -2,7 +2,10 @@ package com.atguigu.cloud.controller;
 
 import com.atguigu.cloud.entities.Pay;
 import com.atguigu.cloud.entities.PayDTO;
+import com.atguigu.cloud.resp.ResultData;
 import com.atguigu.cloud.service.PayService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -18,35 +21,40 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("pay")
+@Tag(name = "支付微服务模块")
 public class PayController {
 
     private final PayService payService;
 
     @PostMapping("add")
-    public String add(@RequestBody Pay pay){
-        System.out.println(pay);
-        return "成功插入记录, 返回值: " + payService.add(pay);
+    @Operation(summary = "新增",description = "新增支付流水方法")
+    public ResultData<String> add(@RequestBody Pay pay){
+        return ResultData.success("成功插入记录, 返回值: " + payService.add(pay));
     }
 
     @DeleteMapping("del/{id}")
-    public Integer delete(@PathVariable("id") Integer id) {
-        return payService.delete(id);
+    @Operation(summary = "删除",description = "删除支付流水方法")
+    public ResultData<Integer> delete(@PathVariable("id") Integer id) {
+        return ResultData.success(payService.delete(id));
     }
 
     @PutMapping("update")
-    public String update(@RequestBody PayDTO payDTO) {
+    @Operation(summary = "修改",description = "修改支付流水方法")
+    public ResultData<String> update(@RequestBody PayDTO payDTO) {
         Pay pay = new Pay();
         BeanUtils.copyProperties(payDTO,pay);
-        return "成功修改记录, 返回值:" + payService.update(pay);
+        return ResultData.success("成功修改记录, 返回值:" + payService.update(pay));
     }
 
     @GetMapping("get/{id}")
-    public Pay getById(@PathVariable("id") Integer id) {
-        return payService.getById(id);
+    @Operation(summary = "查询",description = "根据id查询单条支付流水方法")
+    public ResultData<Pay> getById(@PathVariable("id") Integer id) {
+        return ResultData.success(payService.getById(id));
     }
 
     @GetMapping("get/all")
-    public List<Pay> getAll(){
-        return payService.getAll();
+    @Operation(summary = "查询所有",description = "查询所有支付流水方法")
+    public ResultData<List<Pay>> getAll(){
+        return ResultData.success(payService.getAll());
     }
 }
