@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author FAll
@@ -34,13 +33,9 @@ public class PayController {
     @GetMapping(value = "get/info")
     private String getInfoByConsul(@Value("${atguigu.info}") String atguiguInfo)
     {
-        try {
-            TimeUnit.SECONDS.sleep(62);
-        } catch (InterruptedException e) {
-            log.error(e.getMessage());
-        }
         return "atguiguInfo: "+atguiguInfo+"\t"+"port: "+port;
     }
+
 
     @PostMapping("add")
     @Operation(summary = "新增",description = "新增支付流水方法")

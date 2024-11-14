@@ -1,5 +1,6 @@
 package com.atguigu.cloud.controller;
 
+import com.atguigu.cloud.apis.PayFeignApi;
 import com.atguigu.cloud.entities.PayDTO;
 import com.atguigu.cloud.resp.ResultData;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ import java.util.List;
 @RequestMapping("consumer")
 public class OrderController {
 
-    private final RestTemplate restTemplate;
+    private final PayFeignApi payFeignApi;
 
     private final DiscoveryClient discoveryClient;
     public static final String PAYMENT_SRV_URL = "http://cloud-payment-service";
@@ -45,33 +46,19 @@ public class OrderController {
 
     @GetMapping("pay/get/info")
     public String getInfo() {
-        return restTemplate.getForObject(PAYMENT_SRV_URL + "/pay/get/info", String.class);
+        return payFeignApi.mylb();
     }
 
     @GetMapping("pay/get/{id}")
     public ResultData<?> getOrder(@PathVariable("id") Integer id) {
-        return restTemplate.getForObject(PAYMENT_SRV_URL + "/pay/get/" + id, ResultData.class);
+        return payFeignApi.getPayInfo(id);
     }
 
-    @GetMapping("pay/get/all")
-    public ResultData<?> getAllOrder() {
-        return restTemplate.getForObject(PAYMENT_SRV_URL + "/pay/get/all", ResultData.class);
-    }
+
 
     @PostMapping("pay/add")
     public ResultData<?> addOrder(@RequestBody PayDTO payDTO) {
-        return restTemplate.postForObject(PAYMENT_SRV_URL + "/pay/add", payDTO, ResultData.class);
+        return payFeignApi.addPay(payDTO);
     }
 
-    @PutMapping("pay/update")
-    public ResultData<Void> updateOrder(@RequestBody PayDTO payDTO) {
-        restTemplate.put(PAYMENT_SRV_URL + "/pay/update", payDTO);
-        return ResultData.success();
-    }
-
-    @DeleteMapping("del/{id}")
-    public ResultData<Void> deleteOrder(@PathVariable("id") Integer id) {
-        restTemplate.delete(PAYMENT_SRV_URL + "/pay/del/" + id);
-        return ResultData.success();
-    }
 }

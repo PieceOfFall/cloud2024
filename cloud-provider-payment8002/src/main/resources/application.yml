@@ -1,10 +1,5 @@
 server:
-  port: 8001
-  # gzip压缩配置
-  compression:
-    enabled: true
-    min-response-size: 2048
-    mime-types: text/xml,application/xml,application/json
+  port: 8002
 
 # ==========applicationName + druid-mysql8 driver===================
 spring:
