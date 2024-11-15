@@ -54,8 +54,6 @@ public class OrderController {
         return payFeignApi.getPayInfo(id);
     }
 
-
-
     @PostMapping("pay/add")
     public ResultData<?> addOrder(@RequestBody PayDTO payDTO) {
         return payFeignApi.addPay(payDTO);
