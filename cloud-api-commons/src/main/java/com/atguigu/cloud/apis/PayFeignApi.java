@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @author FAll
  * @date 2024年11月14日 10:07
  */
-@FeignClient("cloud-payment-service")
+@FeignClient("cloud-gateway")
 public interface PayFeignApi {
     /**
      * 新增一条支付相关流水记录
@@ -37,4 +37,31 @@ public interface PayFeignApi {
 
     @GetMapping("pay/circuit/{id}")
     String myCircuit(@PathVariable("id") Integer id);
+
+    /**
+     * Resilience Bulkhead 的例子
+     * @param id 支付信息id
+     */
+    @GetMapping(value = "/pay/bulkhead/{id}")
+    String myBulkhead(@PathVariable("id") Integer id);
+
+    /**
+     * Micrometer(Sleuth)进行链路监控的例子
+     * @param id 支付信息id
+     */
+    @GetMapping(value = "/pay/micrometer/{id}")
+    String myMicrometer(@PathVariable("id") Integer id);
+
+    /**
+     * GateWay进行网关测试案例01
+     * @param id 支付信息id
+     */
+    @GetMapping(value = "/pay/gateway/get/{id}")
+    ResultData<?> getById(@PathVariable("id") Integer id);
+
+    /**
+     * Gateway进行网关测试案例02
+     */
+    @GetMapping(value = "/pay/gateway/info")
+    ResultData<String> getGatewayInfo();
 }
